@@ -1,8 +1,8 @@
 import OLTileLayer from 'ol/layer/Tile';
 import { useContext, useEffect } from 'react';
 
-import MapContext from '../MapContext';
-import { dark } from '../source';
+import MapContext from '../../../utils/MapContext';
+import { dark } from '../../../utils/source';
 
 const TileLayer = ({ source, zIndex = 0, isBlackTheme }) => {
     const { map } = useContext(MapContext);

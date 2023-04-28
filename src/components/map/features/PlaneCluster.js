@@ -9,8 +9,8 @@ import { Fill, Icon, Stroke, Style, Text } from 'ol/style.js';
 import { useContext, useEffect } from 'react';
 
 import planeImg from '../../../assets/plane.svg';
-import { countriesList } from '../../common/countriesList';
-import MapContext from '../MapContext';
+import { countriesList } from '../../../utils/countriesList';
+import MapContext from '../../../utils/MapContext';
 
 function clusterMemberStyle(clusterMember, selectedFeature, theme) {
     const icao = selectedFeature

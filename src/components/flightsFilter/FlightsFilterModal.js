@@ -13,9 +13,9 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/system';
 import React, { useContext, useState } from 'react';
 
-import aircraftTypes from '../common/aircraftTypes';
-import { countriesListRussian } from '../common/countriesList';
-import MapContext from '../map/MapContext';
+import aircraftTypes from '../../utils/aircraftTypes';
+import { countriesListRussian } from '../../utils/countriesList';
+import MapContext from '../../utils/MapContext';
 
 const StyledSwitch = styled(Switch)(({ theme }) => ({
     '& .Mui-checked': {

@@ -3,8 +3,7 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import App from './components/App';
-import Layout from './components/Layout';
+import { App, Layout } from './components';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

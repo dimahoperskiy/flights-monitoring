@@ -17,9 +17,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 
 import aeroApi from '../../api/aeroApi';
-import aircraftTypes from '../common/aircraftTypes';
-import { countriesList } from '../common/countriesList';
-import MapContext from '../map/MapContext';
+import aircraftTypes from '../../utils/aircraftTypes';
+import { countriesList } from '../../utils/countriesList';
+import MapContext from '../../utils/MapContext';
 
 const currentFlightMock = {
     number: 'BA 180',

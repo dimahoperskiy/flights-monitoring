@@ -8,7 +8,7 @@ import { Fill, Icon, Stroke, Style, Text } from 'ol/style.js';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import planeImg from '../../assets/plane.svg';
-import MapContext from './MapContext';
+import MapContext from '../../utils/MapContext';
 
 const selectStyleFunction = (
     feature,

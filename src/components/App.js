@@ -2,13 +2,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import React, { useContext, useEffect, useState } from 'react';
 
 import baseApi from '../api/api';
-import { FlightCard } from './flightCard';
-import { FlightsFilterButton, FlightsFilterModal } from './flightsFilter';
-import PlaneCluster from './map/features/PlaneCluster';
-import { Layers, TileLayer } from './map/layers';
-import MapContext from './map/MapContext';
-import { basic } from './map/source';
-import { ThemeSwitch } from './themeSwitch';
+import MapContext from '../utils/MapContext';
+import { basic } from '../utils/source';
+import {
+    FlightCard,
+    FlightsFilterButton,
+    FlightsFilterModal,
+    Layers,
+    PlaneCluster,
+    ThemeSwitch,
+    TileLayer,
+} from './index';
 
 const App = () => {
     const [flights, setFlights] = useState([]);
@@ -144,11 +148,7 @@ const App = () => {
                         setFilterModalOpen={setFilterModalOpen}
                     />
                 )}
-                {/*{planesMapped}*/}
             </Layers>
-            {/*<Controls>*/}
-            {/*    <FullScreenControl />*/}
-            {/*</Controls>*/}
         </>
     );
 };
