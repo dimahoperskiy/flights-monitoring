@@ -5,8 +5,7 @@ const aeroApi = axios.create({
 });
 
 aeroApi.interceptors.request.use(function (config) {
-    config.headers['X-RapidAPI-Key'] =
-        '240687566dmshedcebfd008a4864p1cb964jsn7b0e045004c2';
+    config.headers['X-RapidAPI-Key'] = process.env.REACT_APP_RAPID_API_KEY;
     config.headers['X-RapidAPI-Host'] = 'aerodatabox.p.rapidapi.com';
 
     return config;

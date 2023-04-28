@@ -5,7 +5,7 @@ const baseApi = axios.create({
 });
 
 baseApi.interceptors.request.use(function (config) {
-    const credentials = btoa('dimahoperskiy:openskyPassword1337');
+    const credentials = process.env.REACT_APP_OPENSKY_CREDENTIALS;
     config.headers.Authorization = 'Basic ' + credentials;
 
     return config;
