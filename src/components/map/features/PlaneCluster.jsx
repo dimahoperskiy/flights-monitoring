@@ -5,40 +5,18 @@ import Point from 'ol/geom/Point';
 import { Vector as VectorLayer } from 'ol/layer.js';
 import { fromLonLat } from 'ol/proj.js';
 import { Cluster, Vector as VectorSource } from 'ol/source.js';
-import { Fill, Icon, Stroke, Style, Text } from 'ol/style.js';
+import { Style } from 'ol/style.js';
 import { useContext, useEffect } from 'react';
 
-import planeImg from '../../../assets/plane.svg';
 import { countriesList } from '../../../utils/countriesList';
 import MapContext from '../../../utils/MapContext';
-
-function clusterMemberStyle(clusterMember, selectedFeature, theme) {
-    const icao = selectedFeature
-        ?.getProperties()
-        ?.features[0]?.getProperties()?.icao;
-    return new Style({
-        image: new Icon({
-            anchor: [0.5, 20],
-            rotation: clusterMember.getProperties().direction,
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            src: planeImg,
-            color:
-                clusterMember.getProperties().icao === icao
-                    ? theme.palette.hoverColor.main
-                    : theme.palette.text.primary,
-            width: 24,
-            height: 24,
-        }),
-    });
-}
+import getClusterStyle from '../../../utils/styles/getClusterStyle';
+import getIconStyle from '../../../utils/styles/getIconStyle';
 
 const PlaneCluster = ({
     flights,
-    // flightsFuture,
     setSelectedFlight,
     setCardModalOpen,
-    setMapZoom,
     isBlackTheme,
 }) => {
     const {
@@ -53,17 +31,8 @@ const PlaneCluster = ({
     } = useContext(MapContext);
     const theme = useTheme();
 
-    let currZoom = map.getView().getZoom();
-    map.on('moveend', function () {
-        const newZoom = map.getView().getZoom();
-        if (currZoom !== newZoom) {
-            console.log('zoom end, new zoom: ' + newZoom);
-            currZoom = newZoom;
-            setMapZoom(currZoom);
-        }
-    });
-
     map.on('click', function (evt) {
+        document.body.style.cursor = '';
         const feature = map.forEachFeatureAtPixel(
             evt.pixel,
             function (feature) {
@@ -93,7 +62,7 @@ const PlaneCluster = ({
                 extend(extent, feature.getGeometry().getExtent())
             );
             view.fit(extent, {
-                duration: 750,
+                duration: 500,
                 padding: [500, 500, 500, 500],
                 maxZoom: 15,
             });
@@ -132,8 +101,6 @@ const PlaneCluster = ({
             flightsFiltered = flightsFiltered.filter(
                 (el) => el[17] === aircraftType.id
             );
-            console.log('aircraftType', aircraftType);
-            console.log('flightsFiltered', flightsFiltered);
         }
 
         if (inAir === true) {
@@ -171,16 +138,10 @@ const PlaneCluster = ({
             });
 
             const iconStyle = new Style({
-                image: new Icon({
-                    anchor: [0.5, 20],
-                    rotation: directionInRadians,
-                    anchorXUnits: 'fraction',
-                    anchorYUnits: 'pixels',
-                    src: planeImg,
-                    color: theme.palette.text.primary,
-                    width: 24,
-                    height: 24,
-                }),
+                image: getIconStyle(
+                    directionInRadians,
+                    theme.palette.text.primary
+                ),
             });
 
             iconFeature.setStyle(iconStyle);
@@ -201,51 +162,8 @@ const PlaneCluster = ({
 
         const clusters = new VectorLayer({
             source: clusterSource,
-            style: function (feature) {
-                const size = feature.get('features').length;
-                // let minVal = 999999999999999999;
-                // let minInd;
-                // feature.get('features').forEach((el, ind) => {
-                //     if (Number(el.ol_uid) < minVal) {
-                //         minVal = Number(el.ol_uid);
-                //         minInd = ind;
-                //     }
-                // });
-                // const originalFeature = feature.get('features')[minInd];
-                const originalFeature = feature.get('features')[0];
-                if (size > 1) {
-                    return [
-                        new Style({
-                            image: new Icon({
-                                anchor: [0.5, 25],
-                                rotation: originalFeature.values_.direction,
-                                anchorXUnits: 'fraction',
-                                anchorYUnits: 'pixels',
-                                src: planeImg,
-                                color: theme.palette.text.primary,
-                                width: 24,
-                                height: 24,
-                            }),
-                        }),
-                        new Style({
-                            text: new Text({
-                                text: size.toString(),
-                                fill: new Fill({
-                                    color: '#fff',
-                                }),
-                                stroke: new Stroke({
-                                    color: 'rgba(0, 0, 0, 0.6)',
-                                    width: 3,
-                                }),
-                            }),
-                        }),
-                    ];
-                }
-                return clusterMemberStyle(
-                    originalFeature,
-                    selectedFeature,
-                    theme
-                );
+            style: (feature) => {
+                return getClusterStyle(feature, selectedFeature, theme);
             },
         });
 
@@ -253,8 +171,6 @@ const PlaneCluster = ({
         clusters.setZIndex(0);
         return () => {
             if (map) {
-                // console.log('here');
-                // map.dispatchEvent('pointermove');
                 map.removeLayer(clusters);
             }
         };

@@ -1,12 +1,11 @@
 import { fromLonLat } from 'ol/proj';
-import React, { useState } from 'react';
+import React from 'react';
 
-import Map from '../map/map';
-import mapConfig from '../map/mapConfig.json';
+import Map from '../map/Map';
 
 const Layout = ({ children }) => {
-    const [center] = useState(mapConfig.center);
-    const [zoom] = useState(4);
+    const center = [37.621218, 55.752811];
+    const zoom = 4;
 
     return (
         <div>
