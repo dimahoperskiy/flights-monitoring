@@ -61,8 +61,6 @@ const InfoCard = styled(Card)({
     minWidth: 275,
     marginTop: '15px',
     display: 'flex',
-    // backgroundColor: 'inherit',
-    // backgroundImage:
     background: 'inherit',
     boxShadow: 'none',
     justifyContent: 'space-between',
@@ -164,7 +162,7 @@ const FlightCard = ({
     ] = selectedFlight;
     /* eslint-enable no-unused-vars */
 
-    const { setSelectedFeature, setModalClosed, isBlackTheme } =
+    const { setSelectedFeature, setCardModalClosed, isBlackTheme } =
         useContext(MapContext);
     const [currentFlight, setCurrentFlight] = useState(undefined);
     const [flightLoading, setFlightLoading] = useState(true);
@@ -172,7 +170,7 @@ const FlightCard = ({
     const handleClose = () => {
         setSelectedFeature(null);
         setCardModalOpen(false);
-        setModalClosed(true);
+        setCardModalClosed(true);
         setSelectedFlight(null);
         setCurrentFlight(undefined);
     };
@@ -195,20 +193,14 @@ const FlightCard = ({
                 aeroApi.get(icao24).then((res) => {
                     let currentFlightVariable;
                     if (res.data.length > 1) {
-                        console.log('here 1');
                         currentFlightVariable = res.data.find(
                             (el) => el.callSign?.trim() === callsign.trim()
                         );
                         if (currentFlightVariable === undefined) {
-                            console.log('here 2');
                             currentFlightVariable = res.data.find(
                                 (el) => el.status === 'EnRoute'
                             );
                         }
-                        console.log(
-                            'currentFlightVariable',
-                            currentFlightVariable
-                        );
                     } else {
                         currentFlightVariable = res.data[0];
                     }
@@ -246,7 +238,6 @@ const FlightCard = ({
                     maxWidth: '400px',
                     padding: '0',
                     backgroundColor: theme.palette.background.default,
-                    // backgroundColor: '#ededed',
                 },
             }}
             maxWidth="xs"
@@ -273,7 +264,7 @@ const FlightCard = ({
                     >
                         {currentFlight?.number} / {callsign} / {icao24}
                     </DialogTitle>
-                    <DialogContent>
+                    <DialogContent sx={{ padding: '0 24px' }}>
                         <InfoCard>
                             <div style={{ width: '47%' }}>
                                 <Typography

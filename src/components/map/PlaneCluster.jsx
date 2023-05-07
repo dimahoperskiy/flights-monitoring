@@ -8,10 +8,10 @@ import { Cluster, Vector as VectorSource } from 'ol/source.js';
 import { Style } from 'ol/style.js';
 import { useContext, useEffect } from 'react';
 
-import { countriesList } from '../../../utils/countriesList';
-import MapContext from '../../../utils/MapContext';
-import getClusterStyle from '../../../utils/styles/getClusterStyle';
-import getIconStyle from '../../../utils/styles/getIconStyle';
+import { countriesList } from '../../utils/countriesList';
+import MapContext from '../../utils/MapContext';
+import getClusterStyle from '../../utils/styles/getClusterStyle';
+import getIconStyle from '../../utils/styles/getIconStyle';
 
 const PlaneCluster = ({
     flights,
@@ -23,15 +23,15 @@ const PlaneCluster = ({
         map,
         selectedFeature,
         setSelectedFeature,
-        modalClosed,
-        setModalClosed,
+        cardModalClosed,
+        setCardModalClosed,
         selectedCountry,
         inAir,
         aircraftType,
     } = useContext(MapContext);
     const theme = useTheme();
 
-    map.on('click', function (evt) {
+    map.on('click', async (evt) => {
         document.body.style.cursor = '';
         const feature = map.forEachFeatureAtPixel(
             evt.pixel,
@@ -39,24 +39,30 @@ const PlaneCluster = ({
                 return feature;
             }
         );
-        if (feature?.values_?.features?.length === 1) {
-            const icao = feature?.values_?.features[0]?.values_?.icao;
-            const longitude = feature?.values_?.features[0]?.values_?.longitude;
-            const latitude = feature?.values_?.features[0]?.values_?.latitude;
-            setSelectedFlight(flights.filter((el) => el[0] === icao)[0]);
-            setCardModalOpen(true);
+        if (feature?.getProperties()?.features?.length === 1) {
+            const { icao, longitude, latitude } =
+                feature?.getProperties()?.features[0]?.getProperties() || {};
             setTimeout(() => {
-                map.getView().animate({
-                    center: fromLonLat([longitude, latitude]),
-                });
+                map.getView().animate(
+                    {
+                        center: fromLonLat([longitude, latitude]),
+                    },
+                    (completed) => {
+                        setCardModalClosed(completed);
+                        setTimeout(() => {
+                            document.body.style.cursor = 'auto';
+                        }, 50);
+                    }
+                );
+                setSelectedFlight(flights.filter((el) => el[0] === icao)[0]);
+                setCardModalOpen(true);
+                setSelectedFeature(feature);
             }, 0);
-            setSelectedFeature(feature);
-            setModalClosed(false);
-        } else if (!feature?.values_?.features) {
+        } else if (!feature?.getProperties()?.features) {
             return false;
         } else {
             const view = map.getView();
-            const clusterMembers = feature?.values_?.features;
+            const clusterMembers = feature?.getProperties()?.features;
             const extent = createEmpty();
             clusterMembers.forEach((feature) =>
                 extend(extent, feature.getGeometry().getExtent())
@@ -66,19 +72,6 @@ const PlaneCluster = ({
                 padding: [500, 500, 500, 500],
                 maxZoom: 15,
             });
-        }
-    });
-
-    map.on('pointermove', function (evt) {
-        const feature = map.forEachFeatureAtPixel(
-            evt.pixel,
-            function (feature) {
-                return feature;
-            }
-        );
-        if (feature === undefined) {
-            document.body.style.cursor = '';
-            setSelectedFeature(null);
         }
     });
 
@@ -129,27 +122,22 @@ const PlaneCluster = ({
 
             const directionInRadians = true_track * (Math.PI / 180);
 
-            const iconFeature = new Feature({
+            return new Feature({
                 geometry: new Point(fromLonLat([longitude, latitude])),
+                style: new Style({
+                    image: getIconStyle(
+                        directionInRadians,
+                        theme.palette.text.primary
+                    ),
+                }),
                 direction: directionInRadians,
                 icao: icao24,
                 longitude,
                 latitude,
             });
-
-            const iconStyle = new Style({
-                image: getIconStyle(
-                    directionInRadians,
-                    theme.palette.text.primary
-                ),
-            });
-
-            iconFeature.setStyle(iconStyle);
-            return iconFeature;
         });
         const distanceInput = 20;
         const minDistanceInput = 20;
-
         const source = new VectorSource({
             features: features,
         });
@@ -177,7 +165,7 @@ const PlaneCluster = ({
     }, [
         map,
         flights,
-        modalClosed,
+        cardModalClosed,
         isBlackTheme,
         selectedCountry,
         inAir,

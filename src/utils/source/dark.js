@@ -2,7 +2,7 @@ import * as olSource from 'ol/source';
 
 function dark() {
     return new olSource.TileJSON({
-        url: 'https://api.maptiler.com/maps/dataviz-dark/tiles.json?key=o8lOt8l8ClLSxlUD8MkC',
+        url: `https://api.maptiler.com/maps/dataviz-dark/tiles.json?key=${process.env.REACT_APP_MAPTILER_KEY}`,
         tileSize: 512,
     });
 }

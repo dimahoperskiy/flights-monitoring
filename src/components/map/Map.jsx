@@ -14,11 +14,12 @@ const Map = ({ children, zoom, center }) => {
     const mapRef = useRef();
     const [map, setMap] = useState(null);
     const [selectedFeature, setSelectedFeature] = useState(null);
-    const [modalClosed, setModalClosed] = useState(true);
-    const [isBlackTheme, setIsBlackTheme] = React.useState(false);
-    const [selectedCountry, setSelectedCountry] = React.useState(null);
-    const [inAir, setInAir] = React.useState(null);
-    const [aircraftType, setAircraftType] = React.useState(null);
+    const [cardModalClosed, setCardModalClosed] = useState(true);
+    const [isBlackTheme, setIsBlackTheme] = useState(false);
+    // filters
+    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [inAir, setInAir] = useState(null);
+    const [aircraftType, setAircraftType] = useState(null);
 
     const { palette } = createTheme();
     const theme = useMemo(
@@ -38,6 +39,19 @@ const Map = ({ children, zoom, center }) => {
             }),
         [isBlackTheme]
     );
+
+    map?.on('pointermove', function (evt) {
+        const feature = map.forEachFeatureAtPixel(
+            evt.pixel,
+            function (feature) {
+                return feature;
+            }
+        );
+        if (feature === undefined) {
+            document.body.style.cursor = '';
+            setSelectedFeature(null);
+        }
+    });
 
     const interaction = new Select({
         condition: pointerMove,
@@ -82,8 +96,8 @@ const Map = ({ children, zoom, center }) => {
                     selectedFeature,
                     setSelectedFeature,
                     interaction,
-                    modalClosed,
-                    setModalClosed,
+                    cardModalClosed,
+                    setCardModalClosed,
                     isBlackTheme,
                     setIsBlackTheme,
                     selectedCountry,

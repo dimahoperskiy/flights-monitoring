@@ -2,9 +2,7 @@ import App from './App';
 import { FlightCard } from './flightCard';
 import { FlightsFilterButton, FlightsFilterModal } from './flightsFilter';
 import { Layout } from './layout';
-import { PlaneCluster } from './map/features';
-import { Layers, TileLayer } from './map/layers';
-import Map from './map/Map';
+import { Map, PlaneCluster, TileLayer } from './map';
 import { ThemeSwitch } from './themeSwitch';
 
 export {
@@ -12,7 +10,6 @@ export {
     FlightCard,
     FlightsFilterButton,
     FlightsFilterModal,
-    Layers,
     Layout,
     Map,
     PlaneCluster,

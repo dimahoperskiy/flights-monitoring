@@ -50,14 +50,3 @@ const ThemeSwitch = styled(Switch)(({ theme }) => ({
 }));
 
 export default ThemeSwitch;
-
-// export default function CustomizedSwitches() {
-//   return (
-//     <FormGroup>
-//       <FormControlLabel
-//         control={<MaterialUISwitch sx={{ m: 1 }} defaultChecked />}
-//         label="MUI switch"
-//       />
-//     </FormGroup>
-//   );
-// }
