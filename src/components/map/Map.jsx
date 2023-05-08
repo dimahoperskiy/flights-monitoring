@@ -17,6 +17,7 @@ const Map = ({ children, zoom, center }) => {
     const [cardModalClosed, setCardModalClosed] = useState(true);
     const [isBlackTheme, setIsBlackTheme] = useState(false);
     // filters
+    const [searchedFlight, setSearchedFlight] = useState(null);
     const [selectedCountry, setSelectedCountry] = useState(null);
     const [inAir, setInAir] = useState(null);
     const [aircraftType, setAircraftType] = useState(null);
@@ -106,6 +107,8 @@ const Map = ({ children, zoom, center }) => {
                     setInAir,
                     aircraftType,
                     setAircraftType,
+                    searchedFlight,
+                    setSearchedFlight,
                 }}
             >
                 <div ref={mapRef} className="ol-map">

@@ -8,6 +8,7 @@ import {
     FlightsFilterButton,
     FlightsFilterModal,
     PlaneCluster,
+    SearchButton,
     ThemeSwitch,
     TileLayer,
 } from './index';
@@ -18,7 +19,8 @@ const App = () => {
     const [cardModalOpen, setCardModalOpen] = useState(false);
     const [filterModalOpen, setFilterModalOpen] = useState(false);
     const [selectedFlight, setSelectedFlight] = useState(null);
-    const { isBlackTheme, setIsBlackTheme } = useContext(MapContext);
+    const { isBlackTheme, setIsBlackTheme, searchedFlight } =
+        useContext(MapContext);
 
     useEffect(() => {
         baseApi
@@ -60,7 +62,10 @@ const App = () => {
                     top: '10px',
                 }}
             />
-            <FlightsFilterButton setFilterModalOpen={setFilterModalOpen} />
+            <SearchButton flights={flights} />
+            {!searchedFlight && (
+                <FlightsFilterButton setFilterModalOpen={setFilterModalOpen} />
+            )}
             {flightsLoading && (
                 <CircularProgress
                     sx={{

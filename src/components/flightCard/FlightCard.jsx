@@ -138,6 +138,22 @@ const FlightCard = ({
     setSelectedFlight,
 }) => {
     const theme = useTheme();
+    const { setSelectedFeature, setCardModalClosed, isBlackTheme } =
+        useContext(MapContext);
+    const [currentFlight, setCurrentFlight] = useState(undefined);
+    const [flightLoading, setFlightLoading] = useState(true);
+
+    const handleClose = () => {
+        setSelectedFeature(null);
+        setCardModalOpen(false);
+        setCardModalClosed(true);
+        setSelectedFlight(null);
+        setCurrentFlight(undefined);
+    };
+
+    if (!selectedFlight) {
+        handleClose();
+    }
 
     /* eslint-disable no-unused-vars */
     const [
@@ -161,19 +177,6 @@ const FlightCard = ({
         category,
     ] = selectedFlight;
     /* eslint-enable no-unused-vars */
-
-    const { setSelectedFeature, setCardModalClosed, isBlackTheme } =
-        useContext(MapContext);
-    const [currentFlight, setCurrentFlight] = useState(undefined);
-    const [flightLoading, setFlightLoading] = useState(true);
-
-    const handleClose = () => {
-        setSelectedFeature(null);
-        setCardModalOpen(false);
-        setCardModalClosed(true);
-        setSelectedFlight(null);
-        setCurrentFlight(undefined);
-    };
 
     useEffect(() => {
         const TESTING = true;
@@ -561,9 +564,6 @@ const FlightCard = ({
                         >
                             Закрыть
                         </Button>
-                        {/*<Button onClick={handleClose} autoFocus>*/}
-                        {/*    Agree*/}
-                        {/*</Button>*/}
                     </DialogActions>
                 </>
             )}

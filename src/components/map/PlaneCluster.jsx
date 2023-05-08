@@ -26,8 +26,12 @@ const PlaneCluster = ({
         cardModalClosed,
         setCardModalClosed,
         selectedCountry,
+        setSelectedCountry,
         inAir,
+        setInAir,
         aircraftType,
+        setAircraftType,
+        searchedFlight,
     } = useContext(MapContext);
     const theme = useTheme();
 
@@ -80,26 +84,33 @@ const PlaneCluster = ({
 
         let flightsFiltered = flights;
 
-        if (selectedCountry) {
-            const countryCode = selectedCountry.code;
-            const countryName = countriesList.find(
-                (el) => el.code === countryCode
-            ).name;
-            flightsFiltered = flightsFiltered.filter(
-                (el) => el[2] === countryName
-            );
-        }
+        if (searchedFlight) {
+            setSelectedCountry(null);
+            setAircraftType(null);
+            setInAir(null);
+            flightsFiltered = [searchedFlight];
+        } else {
+            if (selectedCountry) {
+                const countryCode = selectedCountry.code;
+                const countryName = countriesList.find(
+                    (el) => el.code === countryCode
+                ).name;
+                flightsFiltered = flightsFiltered.filter(
+                    (el) => el[2] === countryName
+                );
+            }
 
-        if (aircraftType !== null) {
-            flightsFiltered = flightsFiltered.filter(
-                (el) => el[17] === aircraftType.id
-            );
-        }
+            if (aircraftType !== null) {
+                flightsFiltered = flightsFiltered.filter(
+                    (el) => el[17] === aircraftType.id
+                );
+            }
 
-        if (inAir === true) {
-            flightsFiltered = flightsFiltered.filter((el) => !el[8]);
-        } else if (inAir === false) {
-            flightsFiltered = flightsFiltered.filter((el) => el[8]);
+            if (inAir === true) {
+                flightsFiltered = flightsFiltered.filter((el) => !el[8]);
+            } else if (inAir === false) {
+                flightsFiltered = flightsFiltered.filter((el) => el[8]);
+            }
         }
 
         const features = flightsFiltered.map((el) => {
@@ -170,6 +181,7 @@ const PlaneCluster = ({
         selectedCountry,
         inAir,
         aircraftType,
+        searchedFlight,
     ]);
     return null;
 };

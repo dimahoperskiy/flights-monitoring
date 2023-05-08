@@ -3,6 +3,7 @@ import { FlightCard } from './flightCard';
 import { FlightsFilterButton, FlightsFilterModal } from './flightsFilter';
 import { Layout } from './layout';
 import { Map, PlaneCluster, TileLayer } from './map';
+import { SearchButton } from './searchButton';
 import { ThemeSwitch } from './themeSwitch';
 
 export {
@@ -13,6 +14,7 @@ export {
     Layout,
     Map,
     PlaneCluster,
+    SearchButton,
     ThemeSwitch,
     TileLayer,
 };

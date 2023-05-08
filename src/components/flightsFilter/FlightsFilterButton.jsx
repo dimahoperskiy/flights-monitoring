@@ -14,7 +14,7 @@ const FlightsFilterButton = ({ setFilterModalOpen }) => {
                 position: 'absolute',
                 zIndex: 1,
                 right: '10px',
-                top: '55px',
+                top: '110px',
                 color: theme.palette.text.primary,
                 backgroundColor: theme.palette.background.default,
             }}
