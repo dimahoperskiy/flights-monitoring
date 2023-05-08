@@ -490,7 +490,7 @@ export const countriesListRussian = [
     { name: 'Украина', code: 'UA' },
     { name: 'Объединенные Арабские Эмираты', code: 'AE' },
     { name: 'объединенное Королевство', code: 'GB' },
-    { name: 'Соединенные Штаты', code: 'US' },
+    { name: 'Соединенные Штаты Америки', code: 'US' },
     { name: 'Внешние малые острова США', code: 'UM' },
     { name: 'Уругвай', code: 'UY' },
     { name: 'Узбекистан', code: 'UZ' },

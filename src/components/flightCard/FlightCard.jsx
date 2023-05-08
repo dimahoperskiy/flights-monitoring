@@ -193,23 +193,30 @@ const FlightCard = ({
 
                 setCurrentFlight(currentFlightMock);
             } else {
-                aeroApi.get(icao24).then((res) => {
-                    let currentFlightVariable;
-                    if (res.data.length > 1) {
-                        currentFlightVariable = res.data.find(
-                            (el) => el.callSign?.trim() === callsign.trim()
-                        );
-                        if (currentFlightVariable === undefined) {
+                aeroApi
+                    .get(icao24)
+                    .then((res) => {
+                        let currentFlightVariable;
+                        if (res.data.length > 1) {
                             currentFlightVariable = res.data.find(
-                                (el) => el.status === 'EnRoute'
+                                (el) => el.callSign?.trim() === callsign.trim()
                             );
+                            if (currentFlightVariable === undefined) {
+                                currentFlightVariable = res.data.find(
+                                    (el) => el.status === 'EnRoute'
+                                );
+                            }
+                        } else {
+                            currentFlightVariable = res.data[0];
                         }
-                    } else {
-                        currentFlightVariable = res.data[0];
-                    }
-                    setCurrentFlight(currentFlightVariable);
-                    setFlightLoading(false);
-                });
+                        setCurrentFlight(currentFlightVariable);
+                        setFlightLoading(false);
+                    })
+                    .catch(() => {
+                        alert(
+                            'Произошла ошибка при отправке запроса, попробуйте еще раз'
+                        );
+                    });
             }
         }
     }, [icao24]);

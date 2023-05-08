@@ -107,6 +107,7 @@ const SearchButton = ({ flights }) => {
                         <Button
                             variant="contained"
                             color="success"
+                            disabled={!value}
                             sx={{ width: '48%' }}
                             onClick={handleFind}
                         >
@@ -115,6 +116,7 @@ const SearchButton = ({ flights }) => {
                         <Button
                             variant="contained"
                             color="error"
+                            disabled={!value}
                             sx={{ width: '48%' }}
                             onClick={handleReset}
                         >
