@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/flights-monitoring/static/css/main.5585a8dd.css",
+    "main.js": "/flights-monitoring/static/js/main.57e61da9.js",
+    "index.html": "/flights-monitoring/index.html",
+    "static/media/plane.svg": "/flights-monitoring/static/media/plane.a5f7c00521c93befa4a3bf89ed4b325b.svg",
+    "main.5585a8dd.css.map": "/flights-monitoring/static/css/main.5585a8dd.css.map",
+    "main.57e61da9.js.map": "/flights-monitoring/static/js/main.57e61da9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5585a8dd.css",
+    "static/js/main.57e61da9.js"
+  ]
+}
